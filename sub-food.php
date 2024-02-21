@@ -7,7 +7,7 @@ include("headder.php");
 <head>
     <link rel="stylesheet" href="Style/styleshome.css">
     <link rel="icon" type="image/png" href="Images/Logos/yum.png">
-    <title>Biryani</title>
+    <title>Food</title>
     <style>
         body {
             margin: 0;

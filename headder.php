@@ -21,7 +21,7 @@ session_start();
                     $username = $_SESSION['username'];
                     echo
                     "
-                <li>$username</li>
+                <li><a href='#'>$username</a></li>
                 <li><a href='logout.php'>Logout</a></li>
                 ";
                 } else {
