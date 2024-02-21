@@ -22,7 +22,7 @@ session_start();
                     echo
                     "
                 <li>$username</li>
-                <li><a href='logout.php'>Logout</a></li>
+                <li><a href='exit.php'>Logout</a></li>
                 ";
                 } else {
                     echo "

@@ -1,3 +1,6 @@
+<?php
+include("logout.php");
+?>
 <!DOCTYPE html>
 <html>
 
@@ -72,12 +75,13 @@
 
                 <ul class="nav-links">
 
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="signup.html">Sign Up</a></li>
-                    <li><a href="customerviewfood.html">What's special?</a></li>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="signup.php">Sign Up</a></li>
+                    <li><a href="index.php">What's special?</a></li>
                 </ul>
             </nav>
         </header>
+
 
         <div class="vid" style="width: 100%;height:10vh position=relative;overflow: hidden;">
 
@@ -86,7 +90,7 @@
             </video>
             <div id="overlay">
                 <h1>Your one-stop destination for delicious meals!</h1>
-                <a href="login.html" class="button button1">Login</a>
+                <a href="index.php" class="button button1">ThankYou</a>
 
             </div>
             <div class="content">
@@ -94,6 +98,9 @@
             <h2> Let's savor the authenticity embedded in every bite. Beyond the ingredients, it's a celebration of
                 heritage, craftsmanship, and a love for the simple pleasures of life. </h2>
             <h3> Bon appetite</h3>
+            <?php
+            include("html/footer.html");
+            ?>
     </body>
 
 </html>
