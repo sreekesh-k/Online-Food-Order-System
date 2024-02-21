@@ -1,5 +1,5 @@
 <?php
-include("db_connection.php");
+include("headder.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -106,9 +106,6 @@ include("db_connection.php");
 <body>
 
     <body>
-        <?php
-        include("headder.php");
-        ?>
         <div class="main-content">
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -128,6 +125,9 @@ include("db_connection.php");
             }
             ?>
         </div>
+        <?php
+        include("html/footer.html");
+        ?>
     </body>
 
 </html>

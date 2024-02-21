@@ -1,5 +1,5 @@
 <?php
-include("db_connection.php");
+include("headder.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@ include("db_connection.php");
 <head>
     <link rel="stylesheet" href="Style/styleshome.css">
     <link rel="icon" type="image/png" href="Images/Logos/yum.png">
-    <title>Customer view page</title>
+    <title>Yum Street</title>
     <style>
         body {
             margin: 0;
@@ -122,17 +122,6 @@ include("db_connection.php");
 </head>
 
 <body>
-
-    <header>
-        <nav>
-            <img src="Images/Logos/yum.png" alt="YumStreet" class="logo">
-
-            <ul class="nav-links">
-                <li><a href="index.html">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <p>Chaaya'k Kadi aayaalo?</p>
     <p>Hungry? How about a Pothichoru?</p>
     <p> Craving for pizza? Time to indulge in some cheesy goodness!</p>
@@ -154,6 +143,9 @@ include("db_connection.php");
                 </div";
         }
     }
+    ?>
+    <?php
+    include("html/footer.html");
     ?>
 </body>
 <script>
