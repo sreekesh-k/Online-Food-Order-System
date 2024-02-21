@@ -1,5 +1,6 @@
 <?php
 include("db_connection.php");
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +16,21 @@ include("db_connection.php");
         <nav>
             <img src="Images/Logos/yum.png" alt="YumStreet" class="logo">
             <ul class="nav-links">
-                <li><a href="exit.php">Logout</a></li>
+                <?php
+                if (isset($_SESSION['username'])) {
+                    $username = $_SESSION['username'];
+                    echo
+                    "
+                <li>$username</li>
+                <li><a href='logout.php'>Logout</a></li>
+                ";
+                } else {
+                    echo "
+                <li><a href='Signup.php'>Signup</a></li>
+                <li><a href='login.php'>Login</a></li>
+                ";
+                }
+                ?>
             </ul>
         </nav>
     </header>
