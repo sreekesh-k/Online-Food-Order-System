@@ -195,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    // Response received, do any further processing if needed
+
                 }
             };
             xhttp.open("GET", "store_subfood_in_session.php?id=" + subfoodId, true);

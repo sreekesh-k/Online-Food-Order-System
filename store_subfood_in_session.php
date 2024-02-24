@@ -9,4 +9,3 @@ if (isset($_GET["id"])) {
     // Handle invalid request
     echo "Invalid request";
 }
-?>
