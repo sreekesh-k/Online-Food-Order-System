@@ -1,6 +1,28 @@
 <?php
 include("headder.php");
 ?>
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $food_id = $_POST["fid"];
+    $user_id = $_POST["userid"];
+    $quantity = $_POST["quantity"];
+
+    // Check if the item is already in the cart for this user
+    $sql = "SELECT * FROM cart WHERE userid = $userid AND fid = $fid";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Update the quantity
+        $row = $result->fetch_assoc();
+        $new_quantity = $row["quantity"] + $quantity;
+        $sql = "UPDATE cart SET quantity = $new_quantity WHERE userid = $userid AND fid = $fid";
+    } else {
+        // Insert new item into cart
+        $sql = "INSERT INTO cart (user_id, fid, quantity) VALUES ($userid, $fid, $quantity)";
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -100,6 +122,28 @@ include("headder.php");
         h3 {
             color: grey;
         }
+
+        .button {
+            display: block;
+            margin: 0 auto;
+            /* Centers the button horizontally */
+            border: none;
+            padding: 10px 20px;
+            width: 220px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            color: #04AA6D;
+            background-color: #333;
+            border-radius: 50px;
+        }
+
+        .button:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
     </style>
 </head>
 
@@ -108,8 +152,9 @@ include("headder.php");
     <body>
         <div class="main-content">
             <?php
-            if ($_SERVER["REQUEST_METHOD"] == "GET") {
-                $sql = "SELECT * FROM subfood WHERE fid={$_GET["fid"]} ORDER BY RAND()";
+            if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["fid"])) {
+                $fid = $_GET["fid"];
+                $sql = "SELECT * FROM subfood WHERE fid= $fid";;
                 $result = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -119,15 +164,43 @@ include("headder.php");
                         <h2>{$row["name"]}</h2>
                         <h3>{$row["price"]}</h3>
                         <p>{$row["description"]}</p>
+                        <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' onclick='toggleAddToPlate(this);'>add to plate
+                        </button>
+                    
                     </div>";
                     }
                 }
             }
             ?>
         </div>
+
+
+
+
+
         <?php
         include("html/footer.html");
         ?>
+
     </body>
+
+    <script>
+        function toggleAddToPlate(button) {
+            var subfoodId = button.getAttribute('data-id');
+            addToPlate(subfoodId);
+            button.innerText = "Added";
+        }
+
+        function addToPlate(subfoodId) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Response received, do any further processing if needed
+                }
+            };
+            xhttp.open("GET", "store_subfood_in_session.php?id=" + subfoodId, true);
+            xhttp.send();
+        }
+    </script>
 
 </html>
