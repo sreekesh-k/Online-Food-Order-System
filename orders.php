@@ -130,72 +130,63 @@ include("headder.php");
     <body>
         <div class="main-content">
             <?php
-            if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["fid"])) {
-                $fid = $_GET["fid"];
-                $sql = "SELECT * FROM subfood WHERE fid= $fid";
-                $result = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result) > 0) {
-                    if (isset($_SESSION["username"])) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo
-                            " <div class='food-item'>
-                            <img src='{$row["img_url"]}'>
-                            <h2>{$row["name"]}</h2>
-                            <h3>{$row["price"]}</h3>
-                            <p>{$row["description"]}</p>
-                            <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' onclick='toggleAddToPlate(this);'>add to plate
-                            </button>
-                        
-                        </div>";
-                        }
-                    } else {
-
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo
-                            " <div class='food-item'>
-                            <img src='{$row["img_url"]}'>
-                            <h2>{$row["name"]}</h2>
-                            <h3>{$row["price"]}</h3>
-                            <p>{$row["description"]}</p>
-                            <a href='login.php' style='text-decoration:none;'><button type='button' name='add_to_plate' class='button' >login to add to plate
-                            </button></a>
-                        
-                        </div>";
-                        }
-                    }
+            if (isset($_SESSION["subfood_ids"])) {
+                // Loop through each stored subfood ID
+                foreach ($_SESSION["subfood_ids"] as $subfood_id) {
+                    $sql = "SELECT * FROM subfood WHERE id= $subfood_id";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    echo
+                    " <div class='food-item'>
+                    <img src='{$row["img_url"]}'>
+                    <h2>{$row["name"]}</h2>
+                    <h3>{$row["price"]}</h3>
+                    <button class='remove-item-btn' data-item-id='{$subfood_id}'>Remove</button>
+                  
+                    
+                
+                </div>";
                 }
+            } else {
+                echo "No subfood IDs stored in session.";
             }
             ?>
-        </div>
 
-
-
-
-
-        <?php
-        include("html/footer.html");
-        ?>
+</div>
+            <?php
+            include("html/footer.html");
+            ?>
+        
 
     </body>
-
     <script>
-        function toggleAddToPlate(button) {
-            var subfoodId = button.getAttribute('data-id');
-            addToPlate(subfoodId);
-            button.innerText = "Added";
-            button.disabled = true;
-        }
+    // JavaScript code for handling removal of items
+            document.querySelectorAll('.remove-item-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    var item_id = this.getAttribute('data-item-id');
 
-        function addToPlate(subfoodId) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-
-                }
-            };
-            xhttp.open("GET", "store_subfood_in_session.php?id=" + subfoodId, true);
-            xhttp.send();
-        }
+                    // Send AJAX request to remove the item
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "order.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                // Item successfully removed, update UI as needed
+                                // For example, remove the item from the DOM
+                                var itemElement = document.querySelector('.food-item[data-item-id="' + item_id + '"]');
+                                if (itemElement) {
+                                    itemElement.remove();
+                                }
+                            } else {
+                                // Handle error
+                                console.error(response.error);
+                            }
+                        }
+                    };
+                    xhr.send("action=removeItem&item_id=" + encodeURIComponent(item_id));
+                });
+            });
     </script>
-
 </html>
