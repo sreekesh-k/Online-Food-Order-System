@@ -28,32 +28,6 @@ include("headder.php");
             text-align: center;
         }
 
-        .button {
-            border: none;
-
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-        }
-
-        .button1 {
-            background-color: white;
-
-            color: black;
-            border: 2px solid #04AA6D;
-            border-radius: 50px;
-        }
-
-        .button1:hover {
-            background-color: #04AA6D;
-            color: white;
-        }
-
         .logo {
             max-width: 250px;
             /* Adjust the maximum width of the logo */
@@ -63,97 +37,128 @@ include("headder.php");
 
         .main-content {
             display: flex;
-
+            flex-direction: column;
             justify-content: space-around;
-            flex-wrap: wrap;
             padding: 50px;
+
         }
 
         .food-item {
-            width: 300px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            max-height: 200px;
             margin-bottom: 20px;
             padding: 10px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .food-item img {
-            max-width: 100%;
             height: auto;
-            max-width: 90%;
+            max-width: 100px;
             border-radius: 50%;
+            flex: 1;
         }
 
-        .food-description {
-            margin-top: 10px;
+        .desc {
+            height: auto;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
         }
 
-        p {
-            font-family: 'Arial', sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 20px;
+        .desc2 {
+            height: auto;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
         }
 
-        h3 {
-            color: grey;
+        .desc3 {
+            height: auto;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
         }
 
-        .button {
-            display: block;
-            margin: 0 auto;
-            /* Centers the button horizontally */
-            border: none;
-            padding: 10px 20px;
-            width: 220px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            transition-duration: 0.4s;
+
+        .quantity-button {
+            background-color: rgba(79, 199, 79, 0.658);
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             cursor: pointer;
-            color: #04AA6D;
-            background-color: #333;
-            border-radius: 50px;
+            font-weight: bold;
+            height: 25px;
+            width: 30px;
+            text-align: center;
         }
 
-        .button:hover {
-            background-color: #04AA6D;
-            color: white;
+        .quantity-button:hover {
+            background-color: rgba(79, 199, 79, 0.958);
         }
     </style>
 </head>
 
-<body>
 
-    <body>
-        <div class="main-content">
-            <?php
-            if (isset($_SESSION["subfood_ids"])) {
-                // Loop through each stored subfood ID
-                foreach ($_SESSION["subfood_ids"] as $subfood_id) {
-                    $sql = "SELECT * FROM subfood WHERE id= $subfood_id";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result);
-                    echo
-                    " <div class='food-item'>
+
+<body>
+    <div class="main-content">
+        <?php
+        if (isset($_SESSION["subfood_ids"])) {
+            // Loop through each stored subfood ID
+            foreach ($_SESSION["subfood_ids"] as $subfood_id) {
+                $sql = "SELECT * FROM subfood WHERE id= $subfood_id";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                echo
+                " <div class='food-item'>
+                    <div class='desc'>
                     <img src='{$row["img_url"]}'>
-                    <h2>{$row["name"]}</h2>
-                    <h3>{$row["price"]}</h3>
+                    </div>
+                    <div class='desc2'><h2>{$row["name"]}</h2></div>
+                    <div class='desc3'>
+                    <button class='quantity-button' onclick='decreaseQuantity(this)'>-</button>
+                    <span id='quantity_<?php echo $subfood_id; ?>'>1</span>
+                    <button class='quantity-button' onclick='increaseQuantity(this)'>+</button>
+                    </div>
                       
                 </div>";
-                }
-            } else {
-                echo "No subfood IDs stored in session.";
             }
-            ?>
-
-        </div>
-        <?php
-        include("html/footer.html");
+        } else {
+            echo "No subfood IDs stored in session.";
+        }
         ?>
 
+    </div>
+    <?php
+    include("html/footer.html");
+    ?>
 
-    </body>
+
+</body>
+<script>
+    // Function to decrease quantity
+    function decreaseQuantity(button) {
+        var span = button.nextElementSibling;
+        var currentQuantity = parseInt(span.innerText);
+        if (currentQuantity > 1) {
+            span.innerText = currentQuantity - 1;
+        }
+    }
+
+    // Function to increase quantity
+    function increaseQuantity(button) {
+        var span = button.previousElementSibling;
+        var currentQuantity = parseInt(span.innerText);
+        span.innerText = currentQuantity + 1;
+    }
+</script>
+
 </html>
