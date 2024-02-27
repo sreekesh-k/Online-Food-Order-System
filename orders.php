@@ -141,10 +141,7 @@ include("headder.php");
                     <img src='{$row["img_url"]}'>
                     <h2>{$row["name"]}</h2>
                     <h3>{$row["price"]}</h3>
-                    <button class='remove-item-btn' data-item-id='{$subfood_id}'>Remove</button>
-                  
-                    
-                
+                      
                 </div>";
                 }
             } else {
@@ -152,41 +149,11 @@ include("headder.php");
             }
             ?>
 
-</div>
-            <?php
-            include("html/footer.html");
-            ?>
-        
+        </div>
+        <?php
+        include("html/footer.html");
+        ?>
+
 
     </body>
-    <script>
-    // JavaScript code for handling removal of items
-            document.querySelectorAll('.remove-item-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    var item_id = this.getAttribute('data-item-id');
-
-                    // Send AJAX request to remove the item
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "order.php", true);
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var response = JSON.parse(xhr.responseText);
-                            if (response.success) {
-                                // Item successfully removed, update UI as needed
-                                // For example, remove the item from the DOM
-                                var itemElement = document.querySelector('.food-item[data-item-id="' + item_id + '"]');
-                                if (itemElement) {
-                                    itemElement.remove();
-                                }
-                            } else {
-                                // Handle error
-                                console.error(response.error);
-                            }
-                        }
-                    };
-                    xhr.send("action=removeItem&item_id=" + encodeURIComponent(item_id));
-                });
-            });
-    </script>
 </html>

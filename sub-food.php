@@ -136,17 +136,38 @@ include("headder.php");
                 $result = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($result) > 0) {
                     if (isset($_SESSION["username"])) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo
-                            " <div class='food-item'>
-                            <img src='{$row["img_url"]}'>
-                            <h2>{$row["name"]}</h2>
-                            <h3>{$row["price"]}</h3>
-                            <p>{$row["description"]}</p>
-                            <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' onclick='toggleAddToPlate(this);'>add to plate
-                            </button>
-                        
-                        </div>";
+                        if (isset($_SESSION["subfood_ids"])) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                if (in_array($row["id"], $_SESSION["subfood_ids"])) {
+                                    $button = " <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' disabled>added
+                                            </button>";
+                                } else {
+                                    $button = " <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' onclick='toggleAddToPlate(this);'>add to plate
+                                        </button>";
+                                }
+                                echo
+                                " <div class='food-item'>
+                                        <img src='{$row["img_url"]}'>
+                                        <h2>{$row["name"]}</h2>
+                                        <h3>{$row["price"]}</h3>
+                                        <p>{$row["description"]}</p>
+                                        {$button}
+                                    
+                                    </div>";
+                            }
+                        } else {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo
+                                " <div class='food-item'>
+                                        <img src='{$row["img_url"]}'>
+                                        <h2>{$row["name"]}</h2>
+                                        <h3>{$row["price"]}</h3>
+                                        <p>{$row["description"]}</p>
+                                        <button type='button' name='add_to_plate' class='button' data-id='{$row["id"]}' onclick='toggleAddToPlate(this);'>add to plate
+                                        </button>
+                                    
+                                    </div>";
+                            }
                         }
                     } else {
 
